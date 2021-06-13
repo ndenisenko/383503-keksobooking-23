@@ -42,7 +42,7 @@ function getRandomPositiveInteger (a, b) {
   // И в конце с помощью метода Math.floor мы округляем полученный результат,
   // потому что Math.random() генерирует только дробные числа и ноль.
   return Math.floor(result);
-};
+}
 
 const APARTMENTS_COUNT = 10;
 const TITLES = ['Уютная квартира',
@@ -54,7 +54,7 @@ const TITLES = ['Уютная квартира',
   '1-к. квартира',
   'ЖК Дом на Блюхера',
   'ЖК Иван да Марья',
-  'ЖК Паруса'
+  'ЖК Паруса',
 ];
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const CHECKINS = ['12:00', '13:00', '14:00'];
@@ -62,17 +62,15 @@ const CHECKOUTS = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const DESCRIPTIONS = ['Идеально чистая квартира', 'Недорогой отель', 'Со всеми удобствами', 'Курить запрещено', 'Можно с животными'];
 const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 
-const getRandomArrayElement = (elements) => {
-  return elements[_.random(0, elements.length - 1)];
-};
+const getRandomArrayElement = (elements) => elements[_.random(0, elements.length - 1)];
 
 const showAd = () => {
 
-  let featuresArray = new Array(getRandomPositiveInteger(1, FEATURES.length - 1)).fill(null);
-  let featuresNoRepeat = FEATURES;
+  const featuresArray = new Array(getRandomPositiveInteger(1, FEATURES.length - 1)).fill(null);
+  const featuresNoRepeat = FEATURES;
   for (let i = 0; i <= featuresArray.length -1; i++) {
     featuresArray[i] = featuresNoRepeat[getRandomPositiveInteger(0, featuresNoRepeat.length - 1)];
     const index = featuresNoRepeat.indexOf(featuresArray[i]);
@@ -81,8 +79,8 @@ const showAd = () => {
     }
   }
   //
-  let photosArray = new Array(getRandomPositiveInteger(1, PHOTOS.length - 1)).fill(null);
-  let photosNoRepeat = PHOTOS;
+  const photosArray = new Array(getRandomPositiveInteger(1, PHOTOS.length - 1)).fill(null);
+  const photosNoRepeat = PHOTOS;
   for (let i = 0; i <= photosArray.length -1; i++) {
     photosArray[i] = photosNoRepeat[getRandomPositiveInteger(0, photosNoRepeat.length - 1)];
     const index = photosNoRepeat.indexOf(photosArray[i]);
@@ -93,21 +91,21 @@ const showAd = () => {
 
   let randomAvatarIndex =   getRandomPositiveInteger(1,10);
   if (randomAvatarIndex < 10) {
-    randomAvatarIndex = '0' + randomAvatarIndex;
+    randomAvatarIndex = `0${  randomAvatarIndex}`;
   }
 
-  let location = {
+  const location = {
     lat: getRandomPositiveFloat(35.65000, 35.70000, 5),
     lng: getRandomPositiveFloat(139.70000, 139.80000, 5),
   };
 
-  let author = {
-    avatar: 'img/avatars/user' + randomAvatarIndex + '.png',
+  const author = {
+    avatar: `img/avatars/user${  randomAvatarIndex  }.png`,
   };
 
-  let offer = {
+  const offer = {
     title: TITLES[getRandomPositiveInteger(0,TITLES.length - 1)],
-    address: location.lat + ',' + location.lng,
+    address: `${location.lat  },${  location.lng}`,
     price: getRandomPositiveInteger(1000,20000),
     type: TYPES[getRandomPositiveInteger(0,TYPES.length - 1)],
     rooms: getRandomPositiveInteger(1,5),
@@ -120,12 +118,11 @@ const showAd = () => {
   };
 
   return {
-     location,
-     offer,
-     author
+    location,
+    offer,
+    author,
   };
 
 };
 
 const apartments = new Array(APARTMENTS_COUNT).fill(null).map(() => showAd());
-console.log(apartments);
