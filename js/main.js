@@ -1,9 +1,9 @@
-function getRandomPositiveFloat (a, b, digits = 1) {
+function getRandomPositiveFloat (firstValue, secondValue, digits = 1) {
   // Чтобы не заставлять пользователя нашей функции помнить порядок аргументов,
   // реализуем поддержку передачи минимального и максимального значения в любом порядке,
   // а какое из них большее и меньшее вычислим с помощью Math.min и Math.max
-  const lower = Math.min(Math.abs(a), Math.abs(b));
-  const upper = Math.max(Math.abs(a), Math.abs(b));
+  const lower = Math.min(Math.abs(firstValue), Math.abs(secondValue));
+  const upper = Math.max(Math.abs(firstValue), Math.abs(secondValue));
   // Обратите внимание, чтобы учесть условие, что диапазон может быть [0, ∞),
   // мы не ругаем пользователя за переданное отрицательное число,
   // а просто берём его по модулю с помощью Math.abs
@@ -18,7 +18,7 @@ function getRandomPositiveFloat (a, b, digits = 1) {
   return result.toFixed(digits);
 }
 
-function getRandomPositiveInteger (a, b) {
+function getRandomPositiveInteger (firstValue, secondValue) {
   // Чтобы не заставлять пользователя нашей функции помнить порядок аргументов,
   // реализуем поддержку передачи минимального и максимального значения в любом порядке,
   // а какое из них большее и меньшее вычислим с помощью Math.min и Math.max.
@@ -27,8 +27,8 @@ function getRandomPositiveInteger (a, b) {
   // для этого на всякий пожарный случай нижнюю границу диапазона
   // мы округляем к ближайшему большему целому с помощью Math.ceil,
   // а верхнюю границу - к ближайшему меньшему целому с помощью Math.floor
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+  const lower = Math.ceil(Math.min(Math.abs(firstValue), Math.abs(secondValue)));
+  const upper = Math.floor(Math.max(Math.abs(firstValue), Math.abs(secondValue)));
   // Обратите внимание, чтобы учесть условие, что диапазон может быть [0, ∞),
   // мы не ругаем пользователя за переданное отрицательное число,
   // а просто берём его по модулю с помощью Math.abs
@@ -65,31 +65,27 @@ const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/ke
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 
-const getRandomArrayElement = (elements) => elements[_.random(0, elements.length - 1)];
+//const getRandomArrayElement = (elements) => elements[_.random(0, elements.length - 1)];
+
+const generateFeatures = (amount) => {
+  const featuresArray = [];
+  const featuresCopy = FEATURES.slice();
+  for (let step = 0; step <= amount; step++) {
+    featuresArray.push(featuresCopy[getRandomPositiveInteger(0, featuresCopy.length - 1)]);
+    const index = featuresCopy.indexOf(featuresArray[step]);
+    if (index > -1) {
+      featuresCopy.splice(index, 1);
+    }
+  }
+  return featuresArray;
+};
+
+generateFeatures(getRandomPositiveInteger(1, FEATURES.length - 1));
 
 const showAd = () => {
+  const photosArray = PHOTOS.slice(0, getRandomPositiveInteger(0, 2));
 
-  const featuresArray = new Array(getRandomPositiveInteger(1, FEATURES.length - 1)).fill(null);
-  const featuresNoRepeat = FEATURES;
-  for (let i = 0; i <= featuresArray.length -1; i++) {
-    featuresArray[i] = featuresNoRepeat[getRandomPositiveInteger(0, featuresNoRepeat.length - 1)];
-    const index = featuresNoRepeat.indexOf(featuresArray[i]);
-    if (index > -1) {
-      featuresNoRepeat.splice(index, 1);
-    }
-  }
-  //
-  const photosArray = new Array(getRandomPositiveInteger(1, PHOTOS.length - 1)).fill(null);
-  const photosNoRepeat = PHOTOS;
-  for (let i = 0; i <= photosArray.length -1; i++) {
-    photosArray[i] = photosNoRepeat[getRandomPositiveInteger(0, photosNoRepeat.length - 1)];
-    const index = photosNoRepeat.indexOf(photosArray[i]);
-    if (index > -1) {
-      photosNoRepeat.splice(index, 1);
-    }
-  }
-
-  let randomAvatarIndex =   getRandomPositiveInteger(1,10);
+  let randomAvatarIndex = getRandomPositiveInteger(1, 10);
   if (randomAvatarIndex < 10) {
     randomAvatarIndex = `0${  randomAvatarIndex}`;
   }
@@ -112,7 +108,7 @@ const showAd = () => {
     guests: getRandomPositiveInteger(1,10),
     checkin: CHECKINS[getRandomPositiveInteger(0,CHECKINS.length - 1)],
     checkout: CHECKOUTS[getRandomPositiveInteger(0,CHECKOUTS.length - 1)],
-    features: featuresArray,
+    features: generateFeatures(getRandomPositiveInteger(1, FEATURES.length - 1)),
     description: DESCRIPTIONS[getRandomPositiveInteger(0,DESCRIPTIONS.length - 1)],
     photos: photosArray,
   };
@@ -125,4 +121,11 @@ const showAd = () => {
 
 };
 
-const apartments = new Array(APARTMENTS_COUNT).fill(null).map(() => showAd());
+function generateAds(adsCount, cb) {
+  for (let index = 0; index < adsCount; index++) {
+    //console.log(cb());
+    cb();
+  }
+}
+
+generateAds(APARTMENTS_COUNT, showAd);
