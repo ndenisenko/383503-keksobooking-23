@@ -65,8 +65,6 @@ const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/ke
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 
-//const getRandomArrayElement = (elements) => elements[_.random(0, elements.length - 1)];
-
 const generateFeatures = (amount) => {
   const featuresArray = [];
   const featuresCopy = FEATURES.slice();
@@ -123,7 +121,6 @@ const showAd = () => {
 
 function generateAds(adsCount, cb) {
   for (let index = 0; index < adsCount; index++) {
-    //console.log(cb());
     cb();
   }
 }
