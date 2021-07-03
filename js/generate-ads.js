@@ -1,6 +1,8 @@
 import {getRandomPositiveFloat} from './utils/get-random-positive-float.js';
 import {getRandomPositiveInteger} from './utils/get-random-positive-integer.js';
 
+const APARTMENTS_COUNT = 10;
+
 const TITLES = ['Уютная квартира',
   'Апартаменты у реки',
   'Апартаменты на ',
@@ -35,7 +37,7 @@ const generateFeatures = (amount) => {
 };
 
 const showAd = () => {
-  const photosArray = PHOTOS.slice(0, getRandomPositiveInteger(0, 2));
+  const photosArray = PHOTOS.slice(0, getRandomPositiveInteger(0, 3));
 
   let randomAvatarIndex = getRandomPositiveInteger(1, 10);
   if (randomAvatarIndex < 10) {
@@ -73,10 +75,14 @@ const showAd = () => {
 
 };
 
+const list = [];
+
 function generateAds (adsCount) {
   for (let index = 0; index < adsCount; index++) {
-    showAd();
+    list[index] = showAd();
   }
 }
 
-export {generateAds};
+generateAds(APARTMENTS_COUNT);
+
+export {list};

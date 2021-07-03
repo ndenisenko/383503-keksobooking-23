@@ -1,5 +1,3 @@
-import {generateAds} from 'generate-ads.js';
-const APARTMENTS_COUNT = 10;
+import './generate-ads.js';
+import './createCard.js';
 
-//Сгенерировать APARTMENTS_COUNT объявлений
-generateAds(APARTMENTS_COUNT);
