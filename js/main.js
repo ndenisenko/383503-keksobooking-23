@@ -1,3 +1,4 @@
-import './generate-ads.js';
-import './createCard.js';
+import {generateAds} from './generate-ads.js';
+import {createCard} from './create-card.js';
 
+createCard(generateAds(1));
