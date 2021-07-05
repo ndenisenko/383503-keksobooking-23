@@ -34,8 +34,8 @@ const generateFeatures = (amount) => {
   return featuresArray;
 };
 
-const showAd = () => {
-  const photosArray = PHOTOS.slice(0, getRandomPositiveInteger(0, 2));
+const generateAd = () => {
+  const photosArray = PHOTOS.slice(0, getRandomPositiveInteger(0, 3));
 
   let randomAvatarIndex = getRandomPositiveInteger(1, 10);
   if (randomAvatarIndex < 10) {
@@ -74,9 +74,11 @@ const showAd = () => {
 };
 
 function generateAds (adsCount) {
+  const list = [];
   for (let index = 0; index < adsCount; index++) {
-    showAd();
+    list.push(generateAd());
   }
+  return list;
 }
 
 export {generateAds};
