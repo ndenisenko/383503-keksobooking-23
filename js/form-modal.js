@@ -47,7 +47,39 @@ const userCapacityInputHandler = function () {
   return userRoomsCapacityHandler(userRoomsInput);
 };
 
+const form = document.querySelector('.ad-form');
+const formItemsList = form.querySelectorAll('fieldset');
+const map = document.querySelector('.map__filters');
+const mapFilterList = map.querySelectorAll('select');
+
+const blockMap = function () {
+  formItemsList.forEach((item) => item.setAttribute('disabled', ''));
+  form.classList.add('ad-form--disabled');
+
+  map.classList.add('.map__filters--disabled');
+  mapFilterList.forEach((item) => item.setAttribute('disabled', ''));
+
+  // const mapFeautures = map.querySelector('fieldset').children;
+  // for (let i = 0; i < mapFeautures.length; i++) {
+  //   mapFeautures[i].setAttribute('disabled', '');
+  //   console.log(mapFeautures[i]);
+  // }
+};
+
+const unblockMap = function () {
+  formItemsList.forEach((item) => item.removeAttribute('disabled', ''));
+  form.classList.remove('ad-form--disabled');
+
+  map.classList.remove('.map__filters--disabled');
+  mapFilterList.forEach((item) => item.removeAttribute('disabled', ''));
+};
+
+unblockMap();
+blockMap();
+
 userNameInput.addEventListener('input', userNameInputHandler);
 userPriceInput.addEventListener('input', userPriceInputHandler);
 userRoomsInput.addEventListener('change', userRoomsInputHandler);
 userCapacityInput.addEventListener('change', userCapacityInputHandler);
+
+
