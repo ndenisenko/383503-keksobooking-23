@@ -53,25 +53,19 @@ const map = document.querySelector('.map__filters');
 const mapFilterList = map.querySelectorAll('select');
 
 const blockMap = function () {
-  formItemsList.forEach((item) => item.setAttribute('disabled', ''));
+  formItemsList.forEach((item) => item.setAttribute('disabled', true));
   form.classList.add('ad-form--disabled');
 
   map.classList.add('.map__filters--disabled');
-  mapFilterList.forEach((item) => item.setAttribute('disabled', ''));
-
-  // const mapFeautures = map.querySelector('fieldset').children;
-  // for (let i = 0; i < mapFeautures.length; i++) {
-  //   mapFeautures[i].setAttribute('disabled', '');
-  //   console.log(mapFeautures[i]);
-  // }
+  mapFilterList.forEach((item) => item.setAttribute('disabled', true));
 };
 
 const unblockMap = function () {
-  formItemsList.forEach((item) => item.removeAttribute('disabled', ''));
+  formItemsList.forEach((item) => item.removeAttribute('disabled', true));
   form.classList.remove('ad-form--disabled');
 
   map.classList.remove('.map__filters--disabled');
-  mapFilterList.forEach((item) => item.removeAttribute('disabled', ''));
+  mapFilterList.forEach((item) => item.removeAttribute('disabled'));
 };
 
 unblockMap();
