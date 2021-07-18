@@ -7,7 +7,7 @@ const userPriceInput = document.querySelector('input[name="price"]');
 const userRoomsInput = document.querySelector('select[name="rooms"]');
 const userCapacityInput = document.querySelector('select[name="capacity"]');
 
-userNameInput.addEventListener('input', () => {
+const userNameInputHandler = function () {
   const valueLength = userNameInput.value.length;
   if (valueLength < MIN_NAME_LENGTH) {
     userNameInput.setCustomValidity(`Еще ${ MIN_NAME_LENGTH - valueLength} симв.`);
@@ -18,9 +18,9 @@ userNameInput.addEventListener('input', () => {
   }
 
   userNameInput.reportValidity();
-});
+};
 
-userPriceInput.addEventListener('input', () => {
+const userPriceInputHandler = function () {
   if (userPriceInput.value > MAX_PRICE) {
     userPriceInput.setCustomValidity(`Цена должнабыть меньше ${ MAX_PRICE} руб.`);
   } else {
@@ -28,18 +28,26 @@ userPriceInput.addEventListener('input', () => {
   }
 
   userPriceInput.reportValidity();
-});
+};
 
-userRoomsInput.addEventListener('change', () => {
+const userRoomsCapacityHandler = function (nodeName) {
   if (userRoomsInput.value < userCapacityInput.value) {
-    userRoomsInput.setCustomValidity('Количество комнат должно быть не меньше количества гостей');
+    nodeName.setCustomValidity('Количество комнат должно быть не меньше количества гостей');
   } else {
-    userRoomsInput.setCustomValidity('');
+    nodeName.setCustomValidity('');
   }
+  nodeName.reportValidity();
+};
 
-  userRoomsInput.reportValidity();
-});
+const userRoomsInputHandler = function () {
+  return userRoomsCapacityHandler(userRoomsInput);
+};
 
-userCapacityInput.addEventListener('change', () => {
+const userCapacityInputHandler = function () {
+  return userRoomsCapacityHandler(userRoomsInput);
+};
 
-});
+userNameInput.addEventListener('input', userNameInputHandler);
+userPriceInput.addEventListener('input', userPriceInputHandler);
+userRoomsInput.addEventListener('change', userRoomsInputHandler);
+userCapacityInput.addEventListener('change', userCapacityInputHandler);
