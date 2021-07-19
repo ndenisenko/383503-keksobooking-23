@@ -68,12 +68,10 @@ const unblockMap = function () {
   mapFilterList.forEach((item) => item.removeAttribute('disabled'));
 };
 
-unblockMap();
-blockMap();
 
 userNameInput.addEventListener('input', userNameInputHandler);
 userPriceInput.addEventListener('input', userPriceInputHandler);
 userRoomsInput.addEventListener('change', userRoomsInputHandler);
 userCapacityInput.addEventListener('change', userCapacityInputHandler);
 
-
+export {blockMap, unblockMap};

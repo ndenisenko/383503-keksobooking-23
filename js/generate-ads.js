@@ -70,7 +70,6 @@ const generateAd = () => {
     offer,
     author,
   };
-
 };
 
 function generateAds (adsCount) {
