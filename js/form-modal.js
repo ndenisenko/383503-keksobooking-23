@@ -1,7 +1,7 @@
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
 const MAX_PRICE = 1000000;
-let priceValue = 0;
+
 
 const userNameInput = document.querySelector('input[name="title"]');
 const userPriceInput = document.querySelector('input[name="price"]');
@@ -35,7 +35,7 @@ const userTimeOutInputHandler = function () {
 };
 
 const userApartTypeInputHandler = function () {
-  //
+  let priceValue = 0;
   switch (userApartTypeInput.value) {
     case 'bungalow':
       priceValue = 0;
