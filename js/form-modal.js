@@ -1,7 +1,10 @@
+import {sendData} from './api.js';
+import {setInitialView} from './map.js';
+import {fetchResult} from './fetch-result.js';
+
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
 const MAX_PRICE = 1000000;
-
 
 const userNameInput = document.querySelector('input[name="title"]');
 const userPriceInput = document.querySelector('input[name="price"]');
@@ -11,7 +14,7 @@ const userApartTypeInput = document.querySelector('select[name="type"]');
 const userTimeInInput = document.querySelector('select[name="timein"]');
 const userTimeOutInput = document.querySelector('select[name="timeout"]');
 
-const timeInOutHandler = function (userTime, autoTime) {
+const timeInOutHandler = (userTime, autoTime) => {
   switch (userTime.value) {
     case '12:00':
       autoTime.value = '12:00';
@@ -64,7 +67,7 @@ const userApartTypeInputHandler = function () {
   userPriceInput.reportValidity();
 };
 
-const userNameInputHandler = function () {
+const userNameInputHandler = () => {
   const valueLength = userNameInput.value.length;
   if (valueLength < MIN_NAME_LENGTH) {
     userNameInput.setCustomValidity(`Еще ${ MIN_NAME_LENGTH - valueLength} симв.`);
@@ -77,7 +80,7 @@ const userNameInputHandler = function () {
   userNameInput.reportValidity();
 };
 
-const userPriceInputHandler = function () {
+const userPriceInputHandler = () => {
   if (userPriceInput.value > MAX_PRICE) {
     userPriceInput.setCustomValidity(`Цена должна быть меньше ${ MAX_PRICE} руб.`);
   } else if (userPriceInput.value < userPriceInput.getAttribute('placeholder')) {
@@ -89,7 +92,7 @@ const userPriceInputHandler = function () {
   userPriceInput.reportValidity();
 };
 
-const userRoomsCapacityHandler = function (nodeName) {
+const userRoomsCapacityHandler = (nodeName) => {
   if (userRoomsInput.value < userCapacityInput.value) {
     nodeName.setCustomValidity('Количество комнат должно быть не меньше количества гостей');
   } else {
@@ -111,7 +114,7 @@ const formItemsList = form.querySelectorAll('fieldset');
 const map = document.querySelector('.map__filters');
 const mapFilterList = map.querySelectorAll('select');
 
-const blockMap = function () {
+const blockMap = () => {
   formItemsList.forEach((item) => item.setAttribute('disabled', true));
   form.classList.add('ad-form--disabled');
 
@@ -119,14 +122,13 @@ const blockMap = function () {
   mapFilterList.forEach((item) => item.setAttribute('disabled', true));
 };
 
-const unblockMap = function () {
+const unblockMap = () => {
   formItemsList.forEach((item) => item.removeAttribute('disabled', true));
   form.classList.remove('ad-form--disabled');
 
   map.classList.remove('.map__filters--disabled');
   mapFilterList.forEach((item) => item.removeAttribute('disabled'));
 };
-
 
 userNameInput.addEventListener('input', userNameInputHandler);
 userPriceInput.addEventListener('input', userPriceInputHandler);
@@ -136,4 +138,31 @@ userApartTypeInput.addEventListener('change', userApartTypeInputHandler);
 userTimeInInput.addEventListener('change', userTimeInInputHandler);
 userTimeOutInput.addEventListener('change', userTimeOutInputHandler);
 
-export {blockMap, unblockMap};
+const formReset = () => {
+  form.reset();
+  setInitialView();
+};
+
+const onSuccessHandler = () => {
+  formReset();
+  setInitialView();
+  fetchResult('success');
+};
+
+const setUserFormSubmit = () => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    sendData(
+      () => onSuccessHandler('success'),
+      () => fetchResult('error'),
+      new FormData(evt.target));
+  });
+};
+
+const setUserFormReset = () => {
+  form.addEventListener('reset', () => {
+    formReset();
+  });
+};
+
+export {blockMap, unblockMap, setUserFormSubmit, setUserFormReset};

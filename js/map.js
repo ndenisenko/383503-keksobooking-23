@@ -1,19 +1,31 @@
-import {generateAds} from './generate-ads.js';
 import {createCard} from './create-card.js';
 import {blockMap, unblockMap} from './form-modal.js';
 
+const userAddressInput = document.querySelector('input[name="address"]');
+
+const INITIAL_LOCATION = [35.675, 139.75];
+const INITIAL_ZOOM = 13;
+const COORDINATES_PRECISION = 5;
+
+const map = L.map('map-canvas');
+
 blockMap();
 
-const map = L.map('map-canvas')
+const setInputInitial = () => {
+  const {lat, lng} = L.latLng(INITIAL_LOCATION);
+  userAddressInput.value = `${lat.toFixed(COORDINATES_PRECISION)}, ${lng.toFixed(COORDINATES_PRECISION)}`;
+};
+
+map
   .on('load', () => {
     unblockMap();
-    const userAddressInput = document.querySelector('input[name="address"]');
+    setInputInitial();
     userAddressInput.setAttribute('readonly', 'readonly');
   })
   .setView({
-    lat: 35.85000,
-    lng: 139.80000,
-  }, 10);
+    lat: INITIAL_LOCATION[0],
+    lng: INITIAL_LOCATION[1],
+  }, INITIAL_ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -21,6 +33,7 @@ L.tileLayer(
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
+
 
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -30,34 +43,34 @@ const mainPinIcon = L.icon({
 
 const pinIcon = L.icon({
   iconUrl: 'img/pin.svg',
-  iconSize: [52, 52],
+  iconSize: [40, 40],
   iconAnchor: [26, 52],
 });
 
-const points = generateAds(10);
-
-points.forEach((item) => {
-  const marker = L.marker(
-    {
-      lat: item.location.lat,
-      lng: item.location.lng,
-    },
-    {
-      icon: pinIcon,
-    },
-  );
-  marker
-    .addTo(map)
-    .bindPopup(
-      createCard(item),
+const renderMarkers = function (points) {
+  points.forEach((item) => {
+    const marker = L.marker(
+      {
+        lat: item.location.lat,
+        lng: item.location.lng,
+      },
+      {
+        icon: pinIcon,
+      },
     );
-});
+    marker
+      .addTo(map)
+      .bindPopup(
+        createCard(item),
+      );
+  });
+};
 
 
 const mainMarker = L.marker(
   {
-    lat: 35.85000,
-    lng: 139.80000,
+    lat: 35.675,
+    lng: 139.75,
   },
   {
     draggable: true,
@@ -68,5 +81,21 @@ const mainMarker = L.marker(
 mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
-  evt.target.getLatLng();
+  userAddressInput.value = `${  evt.target.getLatLng().lat.toFixed(COORDINATES_PRECISION)  } ${  evt.target.getLatLng().lng.toFixed(COORDINATES_PRECISION)}`;
 });
+
+const setInitialView = () => {
+  mainMarker.setLatLng({
+    lat: INITIAL_LOCATION[0],
+    lng: INITIAL_LOCATION[1],
+  });
+
+  map.setView({
+    lat: INITIAL_LOCATION[0],
+    lng: INITIAL_LOCATION[1],
+  }, INITIAL_ZOOM);
+
+  setInputInitial();
+};
+
+export {renderMarkers, setInitialView};
